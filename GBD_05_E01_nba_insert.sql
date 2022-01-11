@@ -12,7 +12,7 @@
 
 /* Se selecciona la BD sobre la que se quiere trabajar */
 
-use gbd05_e01_nba;
+use nba;
 
 
 /* 
