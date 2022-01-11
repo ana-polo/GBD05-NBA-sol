@@ -13,7 +13,7 @@
 
 DROP DATABASE IF EXISTS nba;
 
-CREATE DATABASE nba  IF NOT EXISTS CHARACTER SET utf8mb4 COLLATE utf8mb4_spanish_ci;
+CREATE DATABASE IF NOT EXISTS nba CHARACTER SET utf8mb4 COLLATE utf8mb4_spanish_ci;
 
 
 /* Se selecciona la BD sobre la que se quiere trabajar */
@@ -129,5 +129,3 @@ CREATE TABLE partidos (
     CONSTRAINT fkEquiVisitpParti FOREIGN KEY ( equipoVisitante ) 
         REFERENCES equipos( nombre )
 )engine=innodb;
-
-

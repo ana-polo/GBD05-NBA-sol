@@ -10,6 +10,7 @@
  *  @version 1.0
  */
 
+use nba;
 
 /*************************************************************/
 /* a. Equipo y ciudad de los jugadores españoles de la NBA   */
@@ -22,7 +23,7 @@ FROM
     jugadores 
 WHERE
 	equipos.nombre = jugadores.nombreEquipo
-    AND jugadores.procedencia = "Spain";
+    AND UPPER( jugadores.procedencia ) LIKE "SPAIN";
 
 
 /* bis */
@@ -34,7 +35,7 @@ FROM
         INNER JOIN
     jugadores ON equipos.nombre = jugadores.nombreEquipo
 WHERE
-    jugadores.procedencia = "Spain";
+    LOWER( jugadores.procedencia ) = "spain";
 
 
 /*************************************************************/
@@ -46,7 +47,7 @@ SELECT
 FROM
     equipos
 WHERE
-    equipos.nombre LIKE "H%S";
+    UCASE( equipos.nombre ) LIKE "H%S";
 
 
 /*************************************************************/
@@ -60,7 +61,7 @@ FROM
     jugadores
 WHERE
     jugadores.codigo = estadisticas.jugador
-        AND jugadores.nombre = "Pau Gasol";
+        AND LCASE( jugadores.nombre ) LIKE "pau gasol";
 
 
 /* bis */
@@ -72,7 +73,7 @@ FROM
         INNER JOIN
     jugadores ON jugadores.codigo = estadisticas.jugador
 WHERE
-    jugadores.nombre = "Pau Gasol";
+    LOWER( jugadores.nombre ) = "pau gasol";
 
 
 /****************************************************************/
@@ -84,7 +85,7 @@ SELECT
 FROM
     equipos
 WHERE
-    equipos.conferencia = "West";
+    UCASE( equipos.conferencia ) LIKE "WEST";
 
 
 /************************************************************************************/
@@ -96,7 +97,7 @@ SELECT
 FROM
     jugadores
 WHERE
-    jugadores.procedencia = "Arizona" 
+    LOWER( jugadores.procedencia ) LIKE "arizona" 
         AND jugadores.peso > ( 100 * 0.4535 )
         AND jugadores.altura > "6";
 
@@ -112,7 +113,7 @@ FROM
     jugadores
 WHERE
     jugadores.codigo = estadisticas.jugador
-        AND jugadores.nombreEquipo = "Cavaliers"
+        AND LCASE( jugadores.nombreEquipo ) = "Cavaliers"
 GROUP BY jugadores.nombre;
 
 
@@ -125,7 +126,7 @@ FROM
         INNER JOIN
     jugadores ON jugadores.codigo = estadisticas.jugador
 WHERE
-    jugadores.nombreEquipo = "Cavaliers"
+    LOWER( jugadores.nombreEquipo ) = "cavaliers"
 GROUP BY jugadores.nombre;
 
 
@@ -138,7 +139,7 @@ SELECT
 FROM
     jugadores
 WHERE
-    jugadores.nombre LIKE "__v%";
+    lower( jugadores.nombre ) LIKE "__v%";
 
 
 /*************************************************************************/
@@ -152,7 +153,7 @@ FROM
     equipos
 WHERE
     jugadores.nombreEquipo = equipos.nombre
-        AND Conferencia = "West"
+        AND LCASE( equipos.conferencia ) = "west"
 GROUP BY equipos.nombre;
 
 
@@ -165,7 +166,7 @@ FROM
         INNER JOIN
     equipos ON jugadores.nombreEquipo = equipos.nombre
 WHERE
-    Conferencia = "West"
+    lower( equipos.conferencia ) = "west"
 GROUP BY equipos.nombre;
 
 
@@ -178,7 +179,7 @@ SELECT
 FROM
     jugadores
 WHERE
-    jugadores.procedencia = "Argentina";
+    UPPER( jugadores.procedencia ) LIKE "ARGENTINA";
 
 
 /*************************************************************/
@@ -192,7 +193,7 @@ FROM
     jugadores
 WHERE
     jugadores.codigo = estadisticas.jugador
-        AND jugadores.nombre = "Lebron James";
+        AND LOWER( jugadores.nombre ) = "lebron james";
 
 
 /* bis */
@@ -205,7 +206,7 @@ FROM
     jugadores
 WHERE
     jugadores.codigo = estadisticas.jugador
-        AND jugadores.nombre = "Lebron James";
+        AND LCASE( jugadores.nombre ) = "lebron james";
 
 
 /*********************************************************************/
@@ -219,7 +220,7 @@ FROM
     jugadores
 WHERE
     jugadores.codigo = estadisticas.jugador
-        AND jugadores.nombre = "Jose Calderon"
+        AND LCASE( jugadores.nombre ) LIKE "jose calderon"
         AND estadisticas.temporada = "06/07";
 
 
@@ -232,7 +233,7 @@ FROM
         INNER JOIN
     jugadores ON jugadores.codigo = estadisticas.jugador
 WHERE
-    jugadores.nombre = 'Jose Calderon'
+    LOWER( jugadores.nombre ) LIKE 'jose calderon'
         AND estadisticas.temporada = '06/07';
 
 
@@ -241,26 +242,68 @@ WHERE
 /***************************************************************************/
 
 SELECT 
-    AVG( estadisticas.puntosPorPartido ) AS puntosPorPartido, estadisticas.temporada
+    AVG( estadisticas.puntosPorPartido ) AS puntosPorPartido
 FROM
     estadisticas,
     jugadores
 WHERE
     jugadores.codigo = estadisticas.jugador
-        AND jugadores.nombre = "Lebron James"
+        AND LCASE( jugadores.nombre ) LIKE "lebron james"
         AND estadisticas.temporada BETWEEN "03/04" AND "05/06";
 
 
 /* bis */
 
 SELECT 
-    AVG( estadisticas.puntosPorPartido ) AS puntosPorPartido, estadisticas.temporada
+    AVG( estadisticas.puntosPorPartido ) AS puntosPorPartido
+FROM
+    estadisticas,
+    jugadores
+WHERE
+    jugadores.codigo = estadisticas.jugador
+        AND LCASE( jugadores.nombre ) LIKE "lebron james"
+        AND estadisticas.temporada >= "03/04" 
+        AND estadisticas.temporada <= "05/06";
+
+
+/* bis */
+
+SELECT 
+    AVG( estadisticas.puntosPorPartido ) AS puntosPorPartido
+FROM
+    estadisticas,
+    jugadores
+WHERE
+    jugadores.codigo = estadisticas.jugador
+        AND LCASE( jugadores.nombre ) LIKE "lebron james"
+        AND ( estadisticas.temporada = "03/04"
+            OR estadisticas.temporada = "04/05"
+            OR estadisticas.temporada = "05/06" );
+
+
+/* bis */
+
+SELECT 
+    AVG( estadisticas.puntosPorPartido ) AS puntosPorPartido
+FROM
+    estadisticas,
+    jugadores
+WHERE
+    jugadores.codigo = estadisticas.jugador
+        AND LCASE( jugadores.nombre ) LIKE "lebron james"
+        AND estadisticas.temporada IN ( "03/04", "04/05", "05/06" );
+
+
+/* bis */
+
+SELECT 
+    AVG( estadisticas.puntosPorPartido ) AS puntosPorPartido
 FROM
     estadisticas
         INNER JOIN
     jugadores ON jugadores.codigo = estadisticas.jugador
 WHERE
-    jugadores.nombre = "Lebron James"
+    LOWER( jugadores.nombre ) LIKE "lebron james"
         AND Temporada BETWEEN "03/04" AND "05/06";
 
 
@@ -275,7 +318,7 @@ FROM
     equipos
 WHERE
     jugadores.nombreEquipo = equipos.nombre
-        AND equipos.conferencia = 'East'
+        AND LCASE( equipos.conferencia ) = 'east'
 GROUP BY equipos.nombre;
 
 
@@ -288,7 +331,7 @@ FROM
         INNER JOIN
     equipos ON jugadores.nombreEquipo = equipos.nombre
 WHERE
-    equipos.conferencia = 'East'
+    LOWER( equipos.conferencia ) = 'east'
 GROUP BY equipos.nombre;
 
 
@@ -304,7 +347,7 @@ FROM
     jugadores
 WHERE
     jugadores.codigo = estadisticas.jugador
-        AND jugadores.nombreEquipo = 'Lakers'
+        AND LOWER( jugadores.nombreEquipo ) LIKE 'lakers'
 GROUP BY jugadores.nombre;
 
 
@@ -318,7 +361,7 @@ FROM
         INNER JOIN
     jugadores ON jugadores.codigo = estadisticas.jugador
 WHERE
-    jugadores.nombreEquipo = 'Lakers'
+    LCASE( jugadores.nombreEquipo ) = 'lakers'
 GROUP BY jugadores.nombre;
 
 
@@ -336,7 +379,7 @@ FROM
 WHERE
     jugadores.codigo = estadisticas.jugador
         AND jugadores.nombreEquipo = equipos.nombre
-        AND equipos.conferencia = 'East'
+        AND LOWER( equipos.conferencia ) LIKE 'east'
 GROUP BY jugadores.nombre;
 
 
@@ -351,7 +394,7 @@ FROM
         INNER JOIN
     equipos ON jugadores.nombreEquipo = equipos.nombre
 WHERE
-    equipos.conferencia = 'East'
+    LCASE( equipos.conferencia ) LIKE 'east'
 GROUP BY jugadores.nombre;
 
 
@@ -369,7 +412,7 @@ FROM
 WHERE
     jugadores.codigo = estadisticas.jugador
         AND jugadores.nombreEquipo = equipos.nombre
-        AND equipos.ciudad = 'Los Angeles'
+        AND LOWER( equipos.ciudad ) = 'los angeles'
 GROUP BY jugadores.nombre;
 
 
@@ -384,7 +427,7 @@ FROM
         INNER JOIN
     equipos ON jugadores.nombreEquipo = equipos.nombre
 WHERE
-    equipos.ciudad = 'Los Angeles'
+    LCASE( equipos.ciudad ) LIKE 'los angeles'
 GROUP BY jugadores.nombre;
 
 
@@ -399,7 +442,7 @@ FROM
     equipos
 WHERE
     jugadores.nombreEquipo = equipos.nombre
-        AND Division = 'NorthWest'
+        AND UPPER( equipos.division ) = 'NORTHWEST'
 GROUP BY equipos.nombre;
 
 
@@ -412,7 +455,7 @@ FROM
         INNER JOIN
     equipos ON jugadores.nombreEquipo = equipos.nombre
 WHERE
-    Division = 'NorthWest'
+    LCASE( equipos.division ) = 'northwest'
 GROUP BY equipos.nombre;
 
 
@@ -425,8 +468,8 @@ SELECT
 FROM
     jugadores
 WHERE
-    jugadores.procedencia = 'Spain'
-        OR jugadores.procedencia = 'France'
+    LCASE( jugadores.procedencia ) = 'spain'
+        OR LOWER( jugadores.procedencia ) = 'france'
 GROUP BY jugadores.procedencia;
 
 
@@ -463,7 +506,7 @@ SELECT
 FROM
     jugadores
 WHERE
-    jugadores.nombre LIKE "Y%";
+    UPPER( jugadores.nombre ) LIKE "Y%";
 
 
 /*************************************************************/
@@ -527,7 +570,7 @@ SELECT
 FROM
     jugadores
 WHERE
-    jugadores.nombreEquipo = 'Raptors';
+    LOWER( jugadores.nombreEquipo ) = 'raptors';
 
 
 /*************************************************************/
@@ -575,7 +618,7 @@ FROM
     jugadores
 WHERE
     estadisticas.jugador = jugadores.codigo
-        AND Nombre = 'Kobe Bryant'
+        AND LOWER( jugadores.nombre ) LIKE 'kobe bryant'
 ORDER BY estadisticas.puntosPorPartido
 LIMIT 1;
 
@@ -589,7 +632,7 @@ FROM
         INNER JOIN
     jugadores ON estadisticas.jugador = jugadores.codigo
 WHERE
-    Nombre = 'Kobe Bryant'
+    LCASE( jugadores.nombre ) LIKE 'kobe bryant'
 ORDER BY estadisticas.puntosPorPartido
 LIMIT 1;
 
@@ -608,7 +651,7 @@ WHERE
             jugadores
         WHERE
             estadisticas.jugador = jugadores.codigo
-                AND Nombre = 'Kobe Bryant');
+                AND LOWER( jugadores.nombre ) LIKE 'kobe bryant';
 
 /* bis */
 
@@ -624,7 +667,7 @@ WHERE
                 INNER JOIN
             jugadores ON estadisticas.jugador = jugadores.codigo
         WHERE
-            Nombre = 'Kobe Bryant');
+            LOWER( jugadores.nombre ) LIKE 'kobe bryant';
    
    
 /*************************************************************/
@@ -639,7 +682,7 @@ FROM
 WHERE
     jugadores.nombreEquipo = equipos.nombre
         AND jugadores.posicion = '%G%'
-        AND equipos.conferencia = 'East'
+        AND LCASE( equipos.conferencia ) LIKE 'east'
 GROUP BY jugadores.nombreEquipo;
 
 
@@ -653,7 +696,7 @@ FROM
     equipos ON jugadores.nombreEquipo = equipos.nombre
 WHERE
     jugadores.posicion = '%G%'
-        AND equipos.conferencia = 'East'
+        AND LOWER( equipos.conferencia ) LIKE 'East'
 GROUP BY jugadores.nombreEquipo;
 
 
@@ -677,7 +720,7 @@ SELECT DISTINCT
 FROM
     equipos
 WHERE
-    equipos.conferencia = 'East';
+    UCASE( equipos.conferencia ) LIKE 'EAST';
 
 
 /*************************************************************/
@@ -691,7 +734,7 @@ FROM
     estadisticas
 WHERE
     estadisticas.jugador = jugadores.codigo
-        AND jugadores.nombreEquipo = 'Suns'
+        AND UPPER( jugadores.nombreEquipo ) = 'SUNS'
 ORDER BY estadisticas.rebotesPorPartido
 LIMIT 1;
 
@@ -705,7 +748,7 @@ FROM
         INNER JOIN
     estadisticas ON estadisticas.jugador = jugadores.codigo
 WHERE
-    jugadores.nombreEquipo = 'Suns'
+    UCASE( jugadores.nombreEquipo ) LIKE 'SUNS'
 ORDER BY estadisticas.rebotesPorPartido
 LIMIT 1;
 
@@ -725,8 +768,8 @@ WHERE
             jugadores
         WHERE
             estadisticas.jugador = jugadores.codigo
-                AND jugadores.nombreEquipo = 'Suns')
-        AND jugadores.nombreEquipo = 'Suns';
+                AND UPPER( jugadores.nombreEquipo ) LIKE 'SUNS')
+        AND LCASE( jugadores.nombreEquipo ) LIKE 'suns';
 
 
 /* bis */
@@ -745,8 +788,8 @@ WHERE
             jugadores
         WHERE
             estadisticas.jugador = jugadores.codigo
-                AND jugadores.nombreEquipo = 'Suns')
-        AND jugadores.nombreEquipo = 'Suns';
+                AND LOWER( jugadores.nombreEquipo ) = 'suns')
+        AND UCASE( jugadores.nombreEquipo ) = 'SUNS';
 
 
 /* bis */
@@ -765,8 +808,8 @@ WHERE
                 JOIN
             jugadores ON estadisticas.jugador = jugadores.codigo
         WHERE
-            jugadores.nombreEquipo = 'Suns')
-        AND jugadores.nombreEquipo = 'Suns';
+            UPPER( jugadores.nombreEquipo ) LIKE 'SUNS')
+        AND LOWER( jugadores.nombreEquipo ) = 'suns';
 
 
 /* bis */
@@ -785,8 +828,8 @@ WHERE
                 INNER JOIN
             jugadores ON estadisticas.jugador = jugadores.codigo
         WHERE
-            jugadores.nombreEquipo = 'Suns')
-        AND jugadores.nombreEquipo = 'Suns';
+            LCASE( jugadores.nombreEquipo ) = 'suns')
+        AND UCASE( jugadores.nombreEquipo ) LIKE 'SUNS';
 
 
 /*************************************************************/
@@ -852,7 +895,7 @@ SELECT
 FROM
     jugadores
 WHERE
-    jugadores.nombreEquipo = 'Grizzlies';
+    LCASE( jugadores.nombreEquipo ) LIKE 'grizzlies';
 
 
 /*************************************************************/
