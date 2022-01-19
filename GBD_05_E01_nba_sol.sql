@@ -99,7 +99,7 @@ FROM
 WHERE
     LOWER( jugadores.procedencia ) LIKE "arizona" 
         AND jugadores.peso > ( 100 * 0.4535 )
-        AND jugadores.altura > "6";
+        AND jugadores.altura > "6"; 
 
 
 /*************************************************************/
