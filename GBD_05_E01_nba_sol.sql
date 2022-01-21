@@ -1,5 +1,5 @@
 /**
- *  Fichero:  GBD_05_E01_nba_sol.sql
+  *  Fichero:  GBD_05_E01_nba_sol.sql
  *  Descripción: Consultas sobre la base de nba. SOLUCIONES
  *   
  *  Editor: MySQL Workbench Community (GPL) for Mac OS X version 6.2.4  revision 12437
