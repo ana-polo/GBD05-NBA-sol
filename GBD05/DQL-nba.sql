@@ -1,5 +1,5 @@
 /**
-  *  Fichero:  GBD_05_E01_nba_sol.sql
+ *  Fichero:  DQL-nba.sql
  *  Descripción: Consultas sobre la base de nba. SOLUCIONES
  *   
  *  Editor: MySQL Workbench Community (GPL) for Mac OS X version 6.2.4  revision 12437
@@ -12,9 +12,10 @@
 
 use nba;
 
-/*************************************************************/
-/* a. Equipo y ciudad de los jugadores españoles de la NBA   */
-/*************************************************************/
+/*-- 1. Equipo y ciudad de los jugadores españoles de la NBA.
+*/
+
+    -- OPC 1: SIN USAR JOIN.
 
 SELECT 
     equipos.nombre, equipos.ciudad
@@ -26,7 +27,7 @@ WHERE
     AND UPPER( jugadores.procedencia ) LIKE "SPAIN";
 
 
-/* bis */
+    -- OPC 2: USANDO JOIN
 
 SELECT 
     equipos.nombre, equipos.ciudad
@@ -38,9 +39,10 @@ WHERE
     LOWER( jugadores.procedencia ) = "spain";
 
 
-/*************************************************************/
-/* b. Equipos cuyo nombre comience por H y termine por S     */
-/*************************************************************/
+/*
+--  2. Equipos cuyo nombre comience por H y termine por S.     
+*/
+
 
 SELECT 
     equipos.nombre
@@ -50,9 +52,11 @@ WHERE
     UCASE( equipos.nombre ) LIKE "H%S";
 
 
-/*************************************************************/
-/* c. Puntos por partido de “Pau Gasol” en toda su carrera   */
-/*************************************************************/
+/*
+-- 3. Puntos por partido de “Pau Gasol” en toda su carrera   
+*/
+
+    -- OPC 1: SIN USAR JOIN.
 
 SELECT 
     AVG( estadisticas.puntosPorPartido ) AS puntosPorPartido
@@ -64,7 +68,7 @@ WHERE
         AND LCASE( jugadores.nombre ) LIKE "pau gasol";
 
 
-/* bis */
+    -- OPC 2: USANDO JOIN.
 
 SELECT 
     AVG( estadisticas.puntosPorPartido ) AS puntosPorPartido
@@ -76,9 +80,9 @@ WHERE
     LOWER( jugadores.nombre ) = "pau gasol";
 
 
-/****************************************************************/
-/* d. Equipos pertenecientes a la conferencia oeste ( “West”  ) */
-/****************************************************************/
+/*
+-- 4. Equipos pertenecientes a la conferencia oeste ( “West”  ) 
+*/
 
 SELECT 
     equipos.nombre
@@ -88,9 +92,9 @@ WHERE
     UCASE( equipos.conferencia ) LIKE "WEST";
 
 
-/************************************************************************************/
-/* e. Jugadores de Arizona que pesen más de 100 kg y midan más de 1,82 m ( 6 pies ) */
-/************************************************************************************/
+/*
+-- 5. Jugadores de Arizona que pesen más de 100 kg y midan más de 1,82 m ( 6 pies ) 
+*/
 
 SELECT 
     jugadores.nombre, jugadores.altura
@@ -102,9 +106,11 @@ WHERE
         AND jugadores.altura > "6"; 
 
 
-/*************************************************************/
-/* f. Media de puntos por partido de los jugadores de los “Cavaliers” */
-/*************************************************************/
+/*
+-- 6. Media de puntos por partido de los jugadores de los “Cavaliers” 
+*/
+
+    -- OPC 1: SIN USAR JOIN.
 
 SELECT 
     AVG( estadisticas.puntosPorPartido ) AS puntosPorPartido, jugadores.nombre
@@ -117,7 +123,7 @@ WHERE
 GROUP BY jugadores.nombre;
 
 
-/* bis */
+    -- OPC 2: USANDO JOIN
 
 SELECT 
     AVG( estadisticas.puntosPorPartido ) AS puntosPorPartido, jugadores.nombre
@@ -130,9 +136,9 @@ WHERE
 GROUP BY jugadores.nombre;
 
 
-/**********************************************************************/
-/* g. Jugadores cuya tercera letra del nombre sea ‘v’ */
-/**********************************************************************/
+/*
+-- 7. Jugadores cuya tercera letra del nombre sea ‘v’ 
+*/
 
 SELECT 
     jugadores.nombre
@@ -142,9 +148,11 @@ WHERE
     lower( jugadores.nombre ) LIKE "__v%";
 
 
-/*************************************************************************/
-/* h. Número de jugadores que tienen cada equipo de la conferencia oeste */
-/*************************************************************************/
+/*
+-- 8. Número de jugadores que tienen cada equipo de la conferencia oeste 
+*/
+
+    -- OPC 1: SIN USAR JOIN.
 
 SELECT 
     COUNT( * ) AS cantidadJugadores, equipos.nombre
@@ -157,7 +165,7 @@ WHERE
 GROUP BY equipos.nombre;
 
 
-/* bis */
+    -- OPC 2: USANDO JOIN
 
 SELECT 
     COUNT( * ) AS cantidadJugadores, equipos.nombre
@@ -170,9 +178,9 @@ WHERE
 GROUP BY equipos.nombre;
 
 
-/*************************************************************/
-/* i. Número de jugadores argentinos en la NBA               */
-/*************************************************************/
+/*
+-- 9. Número de jugadores argentinos en la NBA               
+*/
 
 SELECT 
     COUNT( * ) AS cantidadJugadores
@@ -182,9 +190,11 @@ WHERE
     UPPER( jugadores.procedencia ) LIKE "ARGENTINA";
 
 
-/*************************************************************/
-/* j. Máxima media de puntos de Lebron James en su carrera */
-/*************************************************************/
+/*
+-- 10. Máxima media de puntos de Lebron James en su carrera 
+*/
+
+    -- OPC 1: SIN USAR JOIN.
 
 SELECT 
     MAX( estadisticas.puntosPorPartido ) AS maximaMediaPuntos
@@ -196,7 +206,7 @@ WHERE
         AND LOWER( jugadores.nombre ) = "lebron james";
 
 
-/* bis */
+    -- OPC 2: USANDO JOIN
 
 SELECT 
     MAX( estadisticas.puntosPorPartido ) AS maximaMediaPuntos
@@ -209,9 +219,11 @@ WHERE
         AND LCASE( jugadores.nombre ) = "lebron james";
 
 
-/*********************************************************************/
-/* k. Asistencias por partido de José Calderon en la temporada 07/08 */
-/*********************************************************************/
+/*
+-- 11. Asistencias por partido de José Calderon en la temporada 07/08 
+*/
+
+    -- OPC 1: SIN USAR JOIN.
 
 SELECT 
     estadisticas.asistenciasPorPartido
@@ -224,7 +236,7 @@ WHERE
         AND estadisticas.temporada = "06/07";
 
 
-/* bis */
+    -- OPC 2: USANDO JOIN
 
 SELECT 
     estadisticas.asistenciasPorPartido
@@ -237,9 +249,11 @@ WHERE
         AND estadisticas.temporada = '06/07';
 
 
-/***************************************************************************/
-/* Media de puntos por partido de Lebron James en las temporadas del 03/04 al 05/06 */
-/***************************************************************************/
+/*
+-- 12. Media de puntos por partido de Lebron James en las temporadas del 03/04 al 05/06 
+*/
+
+    -- OPC 1: SIN USAR JOIN, CON LIKE Y BETWEEN.
 
 SELECT 
     AVG( estadisticas.puntosPorPartido ) AS puntosPorPartido
@@ -252,7 +266,7 @@ WHERE
         AND estadisticas.temporada BETWEEN "03/04" AND "05/06";
 
 
-/* bis */
+    -- OPC 1: SIN USAR JOIN, CON LIKE Y <=>, MENOS EFICIENTE.
 
 SELECT 
     AVG( estadisticas.puntosPorPartido ) AS puntosPorPartido
@@ -266,7 +280,8 @@ WHERE
         AND estadisticas.temporada <= "05/06";
 
 
-/* bis */
+
+    -- OPC 1: SIN USAR JOIN Y CON IGUALDADES, AÚN MENOS EFICIENTE.
 
 SELECT 
     AVG( estadisticas.puntosPorPartido ) AS puntosPorPartido
@@ -281,7 +296,8 @@ WHERE
             OR estadisticas.temporada = "05/06" );
 
 
-/* bis */
+
+    -- OPC 1: SIN USAR JOIN Y CON IN, IGUAL DE EFICIENTE QUE LA ANTERIOR PERO MÁS FÁCIL DE LEER.
 
 SELECT 
     AVG( estadisticas.puntosPorPartido ) AS puntosPorPartido
@@ -294,7 +310,7 @@ WHERE
         AND estadisticas.temporada IN ( "03/04", "04/05", "05/06" );
 
 
-/* bis */
+    -- OPC 2: USANDO JOIN, LIKE Y BETWEEN
 
 SELECT 
     AVG( estadisticas.puntosPorPartido ) AS puntosPorPartido
@@ -307,9 +323,11 @@ WHERE
         AND Temporada BETWEEN "03/04" AND "05/06";
 
 
-/***********************************************************************************/
-/* m. Número de jugadores que tiene cada equipo de la conferencia este ( “East”  ) */
-/***********************************************************************************/
+/*
+-- 13. Número de jugadores que tiene cada equipo de la conferencia este ( “East”  ) 
+*/
+
+    -- OPC 1: SIN USAR JOIN.
 
 SELECT 
     COUNT( * ) AS cantidadJugadores, equipos.nombre
@@ -322,7 +340,7 @@ WHERE
 GROUP BY equipos.nombre;
 
 
-/* bis */
+    -- OPC 2: USANDO JOIN
 
 SELECT 
     COUNT(*) AS cantidadJugadores, equipos.nombre
@@ -335,9 +353,11 @@ WHERE
 GROUP BY equipos.nombre;
 
 
-/*************************************************************/
-/* n. Tapones por partido de los jugadores de los “Lakers” */
-/*************************************************************/
+/*
+-- 14. Tapones por partido de los jugadores de los “Lakers” 
+*/
+
+    -- OPC 1: SIN USAR JOIN.
 
 SELECT 
     AVG(estadisticas.taponesPorPartido) AS taponesPorPartido,
@@ -351,7 +371,7 @@ WHERE
 GROUP BY jugadores.nombre;
 
 
-/* bis */
+    -- OPC 2: USANDO JOIN
 
 SELECT 
     AVG(estadisticas.taponesPorPartido) AS taponesPorPartido,
@@ -365,9 +385,11 @@ WHERE
 GROUP BY jugadores.nombre;
 
 
-/*************************************************************/
-/* o. Media de rebotes de los jugadores de la conferencia Este */
-/*************************************************************/
+/*
+-- 15. Media de rebotes de los jugadores de la conferencia Este 
+*/
+
+    -- OPC 1: SIN USAR JOIN.
 
 SELECT 
     AVG(estadisticas.rebotesPorPartido) AS rebotesPorPartido,
@@ -383,7 +405,7 @@ WHERE
 GROUP BY jugadores.nombre;
 
 
-/* bis */
+    -- OPC 2: USANDO JOIN
 
 SELECT 
     AVG(estadisticas.rebotesPorPartido) AS rebotesPorPartido,
@@ -398,9 +420,11 @@ WHERE
 GROUP BY jugadores.nombre;
 
 
-/*************************************************************/
-/* p. Rebotes por partido de los jugadores de los equipos de los Angeles */
-/*************************************************************/
+/*
+-- 16. Rebotes por partido de los jugadores de los equipos de los Angeles 
+*/
+
+    -- OPC 1: SIN USAR JOIN.
 
 SELECT 
     AVG(estadisticas.rebotesPorPartido) AS rebotesPorPartido,
@@ -416,7 +440,7 @@ WHERE
 GROUP BY jugadores.nombre;
 
 
-/* bis */
+    -- OPC 2: USANDO JOIN
 
 SELECT 
     AVG(estadisticas.rebotesPorPartido) AS rebotesPorPartido,
@@ -431,9 +455,11 @@ WHERE
 GROUP BY jugadores.nombre;
 
 
-/*************************************************************/
-/* q. Número de jugadores que tiene cada equipo de la división North West */
-/*************************************************************/
+/*
+-- 17. Número de jugadores que tiene cada equipo de la división North West 
+*/
+
+    -- OPC 1: SIN USAR JOIN.
 
 SELECT 
     COUNT(*) AS cantidadJugadores, equipos.nombre
@@ -446,7 +472,7 @@ WHERE
 GROUP BY equipos.nombre;
 
 
-/* bis */
+    -- OPC 2: USANDO JOIN
 
 SELECT 
     COUNT( * ) AS cantidadJugadores, equipos.nombre
@@ -459,9 +485,9 @@ WHERE
 GROUP BY equipos.nombre;
 
 
-/*************************************************************/
-/* r. Número de jugadores de España y Francia en la NBA */
-/*************************************************************/
+/*
+-- 18. Número de jugadores de España y Francia en la NBA 
+*/
 
 SELECT 
     COUNT( * ) AS cantidadJugadores, jugadores.procedencia
@@ -473,9 +499,9 @@ WHERE
 GROUP BY jugadores.procedencia;
 
 
-/*************************************************************/
-/* s. Número de pivots ‘C’ que tiene cada equipo */
-/*************************************************************/
+/*
+-- 19. Número de pivots ‘C’ que tiene cada equipo 
+*/
 
 SELECT 
     COUNT( * ) AS cantidadPivots, jugadores.nombreEquipo
@@ -486,9 +512,9 @@ WHERE
 GROUP BY jugadores.nombreEquipo;
 
 
-/*************************************************************/
-/* t. ¿Cuánto mide el pivot más alto de la NBA? */
-/*************************************************************/
+/*
+-- 20. ¿Cuánto mide el pivot más alto de la NBA? 
+*/
 
 SELECT 
     MAX( jugadores.altura ) AS alturaPivotMasAlto
@@ -497,9 +523,9 @@ FROM
 WHERE jugadores.posicion = "%C%";
 
 
-/*************************************************************/
-/* u. Número de jugadores cuyo nombre comienza por ‘Y’ */
-/*************************************************************/
+/*
+-- 21. Número de jugadores cuyo nombre comienza por ‘Y’ 
+*/
 
 SELECT 
     COUNT( * ) AS cantidaJugadores
@@ -509,9 +535,11 @@ WHERE
     UPPER( jugadores.nombre ) LIKE "Y%";
 
 
-/*************************************************************/
-/* v. Jugadores que NO metieron ningún punto en alguna temporada */
-/*************************************************************/
+/*
+-- 22. Jugadores que NO metieron ningún punto en alguna temporada 
+*/
+
+    -- OPC 1: SIN USAR JOIN.
 
 SELECT DISTINCT
     jugadores.nombre
@@ -523,7 +551,7 @@ WHERE
         AND estadisticas.puntosPorPartido = 0;
 
 
-/* bis */
+    -- OPC 2: USANDO JOIN
 
 SELECT DISTINCT
     jugadores.nombre
@@ -535,9 +563,11 @@ WHERE
     estadisticas.puntosPorPartido = 0;
 
 
-/*************************************************************/
-/* w. Número total de jugadores de cada división */
-/*************************************************************/
+/*
+-- 23. Número total de jugadores de cada división 
+*/
+
+    -- OPC 1: SIN USAR JOIN.
 
 SELECT 
     COUNT(*) AS totalJugadores, equipos.division
@@ -549,7 +579,7 @@ WHERE
 GROUP BY equipos.division;
 
 
-/* bis */
+    -- OPC 2: USANDO JOIN
 
 SELECT 
     COUNT(*) AS totalJugadores, equipos.division
@@ -560,9 +590,9 @@ FROM
 GROUP BY equipos.division;
 
 
-/*************************************************************/
-/* x. Peso medio en kilos y en libras de los jugadores de los “Raptors” */
-/*************************************************************/
+/*
+-- 24. Peso medio en kilos y en libras de los jugadores de los “Raptors” 
+*/
 
 SELECT 
     AVG(jugadores.peso) AS MediaLibras,
@@ -573,9 +603,9 @@ WHERE
     LOWER( jugadores.nombreEquipo ) = 'raptors';
 
 
-/*************************************************************/
-/* y. Mostrar un listado de jugadores con el formato Nombre( Equipo  ) en una sola columna */
-/*************************************************************/
+/*
+-- 25. Mostrar un listado de jugadores con el formato Nombre( Equipo  ) en una sola columna 
+*/
 
 SELECT 
     CONCAT(jugadores.nombre,
@@ -586,9 +616,9 @@ FROM
     jugadores;
 
  
-/*************************************************************/
-/* z. Puntuación más baja de un partido de la NBA */
-/*************************************************************/
+/*
+-- 26. Puntuación más baja de un partido de la NBA 
+*/
 
 SELECT 
     MIN(partidos.puntosLocal + partidos.puntosVisitante)
@@ -596,9 +626,9 @@ FROM
     partidos;
 
 
-/*************************************************************/
-/* aa. Primeros 10 jugadores ordenados alfabéticamente */
-/*************************************************************/
+/*
+-- 27. Primeros 10 jugadores ordenados alfabéticamente 
+*/
 
 SELECT 
     jugadores.nombre
@@ -608,9 +638,12 @@ ORDER BY jugadores.nombre
 LIMIT 10;
 
 
-/*************************************************************/
-/* bb. Temporada con más puntos por partido de Kobe Bryant */
-/*************************************************************/
+/*
+-- 28. Temporada con más puntos por partido de Kobe Bryant 
+*/
+
+    -- OPC 1: SIN USAR JOIN.
+
 SELECT 
     estadisticas.temporada
 FROM
@@ -623,7 +656,7 @@ ORDER BY estadisticas.puntosPorPartido
 LIMIT 1;
 
 
-/* bis */
+    -- OPC 2: USANDO JOIN
 
 SELECT 
     estadisticas.temporada
@@ -637,7 +670,8 @@ ORDER BY estadisticas.puntosPorPartido
 LIMIT 1;
 
 
-/* bis En este caso con subconsultas, aunque si es posible hacerlo sin ella es mejor*/
+
+    -- OPC 1: SIN USAR JOIN Y UNA SUBCONSULTA, MEJOR SI EVITAMOS LA SUBCONSULTA (NECESITA MUCHOS RECURSOS).
 
 SELECT 
     estadisticas.temporada
@@ -653,7 +687,8 @@ WHERE
             estadisticas.jugador = jugadores.codigo
                 AND LOWER( jugadores.nombre ) LIKE 'kobe bryant';
 
-/* bis */
+
+    -- OPC 2: SIN USAR JOIN Y UNA SUBCONSULTA QUE LO USA, MEJOR SI EVITAMOS LA SUBCONSULTA (NECESITA MUCHOS RECURSOS).
 
 SELECT 
     estadisticas.temporada
@@ -670,9 +705,11 @@ WHERE
             LOWER( jugadores.nombre ) LIKE 'kobe bryant';
    
    
-/*************************************************************/
-/* cc. Numero de bases ‘G’ que tiene cada equipo de la conferencia Este */
-/*************************************************************/
+/*
+-- 29. Numero de bases ‘G’ que tiene cada equipo de la conferencia Este 
+*/
+
+    -- OPC 1: SIN USAR JOIN.
 
 SELECT 
     COUNT(*) AS cantidadBases, jugadores.nombreEquipo
@@ -686,7 +723,7 @@ WHERE
 GROUP BY jugadores.nombreEquipo;
 
 
-/* bis */
+    -- OPC 2: USANDO JOIN
 
 SELECT 
     COUNT(*) AS cantidadBases, jugadores.nombreEquipo
@@ -700,9 +737,9 @@ WHERE
 GROUP BY jugadores.nombreEquipo;
 
 
-/*************************************************************/
-/* dd. Número de equipos de cada conferencia */
-/*************************************************************/
+/*
+-- 30. Número de equipos de cada conferencia 
+*/
 
 SELECT 
     COUNT(*) AS cantidadEquipos, equipos.conferencia
@@ -711,9 +748,9 @@ FROM
 GROUP BY equipos.conferencia;
 
 
-/*************************************************************/
-/* ee. Nombre de las divisiones de la conferencia este */
-/*************************************************************/
+/*
+-- 31. Nombre de las divisiones de la conferencia este 
+*/
 
 SELECT DISTINCT
     equipos.division
@@ -723,9 +760,11 @@ WHERE
     UCASE( equipos.conferencia ) LIKE 'EAST';
 
 
-/*************************************************************/
-/* ff. Máximo reboteador de los “Suns” */
-/*************************************************************/
+/*
+-- 32. Máximo reboteador de los “Suns” 
+*/
+
+    -- OPC 1: SIN USAR JOIN.
 
 SELECT 
     jugadores.nombre
@@ -739,7 +778,7 @@ ORDER BY estadisticas.rebotesPorPartido
 LIMIT 1;
 
 
-/* bis */
+    -- OPC 2: USANDO JOIN
 
 SELECT 
     jugadores.nombre
@@ -753,7 +792,8 @@ ORDER BY estadisticas.rebotesPorPartido
 LIMIT 1;
 
 
-/* bis Con subconsultas, aunque es menos eficiente */
+    -- OPC 3: SIN USAR JOIN Y CON UNA SUBCONSULTA, MEJOR SI EVITAMOS LA SUBCONSULTA (NECESITA MUCHOS RECURSOS).
+
 SELECT 
     jugadores.nombre
 FROM
@@ -772,7 +812,7 @@ WHERE
         AND LCASE( jugadores.nombreEquipo ) LIKE 'suns';
 
 
-/* bis */
+    -- OPC 4: USANDO JOIN Y UNA SUBCONSULTA SIN JOIN, MEJOR SI EVITAMOS LA SUBCONSULTA (NECESITA MUCHOS RECURSOS).
 
 SELECT 
     jugadores.nombre
@@ -792,7 +832,7 @@ WHERE
         AND UCASE( jugadores.nombreEquipo ) = 'SUNS';
 
 
-/* bis */
+    -- OPC 5: SIN USAR JOIN EN LA CONSULTA PRINCIPAL Y UNA SUBCONSULTA CON JOIN, MEJOR SI EVITAMOS LA SUBCONSULTA (NECESITA MUCHOS RECURSOS).
 
 SELECT 
     jugadores.nombre
@@ -812,7 +852,7 @@ WHERE
         AND LOWER( jugadores.nombreEquipo ) = 'suns';
 
 
-/* bis */
+    -- OPC 6: USANDO JOIN EN LA CONSULTA PRINCIPAL Y EN LA SUBCONSULTA, MEJOR SI EVITAMOS LA SUBCONSULTA (NECESITA MUCHOS RECURSOS).
 
 SELECT 
     jugadores.nombre
@@ -832,9 +872,11 @@ WHERE
         AND UCASE( jugadores.nombreEquipo ) LIKE 'SUNS';
 
 
-/*************************************************************/
-/* gg. Máximo anotador de toda la BD en una temporada */
-/*************************************************************/
+/*
+-- 33. Máximo anotador de toda la BD en una temporada 
+*/
+
+    -- OPC 1: SIN USAR JOIN Y CON LIMIT.
 
 SELECT 
     jugadores.nombre
@@ -847,7 +889,7 @@ ORDER BY estadisticas.puntosPorPartido
 LIMIT 1;
 
 
-/* bis */
+    -- OPC 2: USANDO JOIN CON LIMIT
 
 SELECT 
     jugadores.nombre
@@ -859,7 +901,7 @@ ORDER BY estadisticas.puntosPorPartido
 LIMIT 1;
             
 
-/* bis Con subconsultas, aunque el codigo es menos eficiente */
+    -- OPC 3: SIN USAR JOIN Y UNA SUBCONSULTA, MEJOR SI EVITAMOS LA SUBCONSULTA (NECESITA MUCHOS RECURSOS).
             
 SELECT 
     jugadores.nombre
@@ -874,21 +916,23 @@ WHERE
             estadisticas);
             
             
-/* bis */
-            
+    -- OPC 4: USANDO JOIN Y UNA SUBCONSULTA, MEJOR SI EVITAMOS LA SUBCONSULTA (NECESITA MUCHOS RECURSOS).
+
 SELECT 
     jugadores.nombre
 FROM
     jugadores
         INNER JOIN
     estadisticas ON estadisticas.jugador = jugadores.codigo
-ORDER BY estadisticas.puntosPorPartido
-LIMIT 1;
-
+WHERE
+    estadisticas.puntosPorPartido = (SELECT 
+            MAX(estadisticas.puntosPorPartido)
+        FROM
+            estadisticas);
   
-/*************************************************************/
-/* hh. ¿Cuántas letras tiene el nombre de cada jugador de los “Grizzlies”. ( Usar la función LENGTH ) */
-/*************************************************************/
+/*
+-- 34. ¿Cuántas letras tiene el nombre de cada jugador de los “Grizzlies”. ( Usar la función LENGTH ) 
+*/
 
 SELECT 
     LENGTH( jugadores.nombre) AS longNombre, jugadores.nombre
@@ -898,9 +942,9 @@ WHERE
     LCASE( jugadores.nombreEquipo ) LIKE 'grizzlies';
 
 
-/*************************************************************/
-/* ii. ¿Cuántas letras tiene el equipo con el nombre más largo de la NBA. ( Considerar Ciudad y nombre ) */
-/*************************************************************/
+/*
+-- 35. ¿Cuántas letras tiene el equipo con el nombre más largo de la NBA. ( Considerar Ciudad y nombre ) 
+*/
 
 SELECT 
     LENGTH(CONCAT(equipos.ciudad, ' ', equipos.nombre)),
@@ -915,9 +959,11 @@ WHERE
 
 
 
-/*************************************************************/
-/* jj. Peso en libras y en kilos del jugador mas alto de la  NBA */
-/*************************************************************/
+/*
+-- 36. Peso en libras y en kilos del jugador mas alto de la  NBA 
+*/
+
+    -- OPC 1: SIN USAR SUBCONSULTA.
 
 SELECT 
     jugadores.peso AS libras, jugadores.peso * 0.4535 AS kilos
@@ -927,7 +973,7 @@ ORDER BY jugadores.altura
 LIMIT 1;
 
 
-/* bis Con subconsulta, aunque es menos eficiente */
+    -- OPC 2: USANDO UNA SUBCONSULTA. ES MENOS EFICIENTE
             
 SELECT 
     jugadores.peso AS libras, jugadores.peso * 0.4535 AS kilos

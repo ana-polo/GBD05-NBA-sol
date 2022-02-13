@@ -1,5 +1,5 @@
 /**
- *  Fichero:  nba_creates.sql
+ *  Fichero:  DDL-nba.sql
  *  Descripción: Consultas de creación de la base de nba
  *   
  *  Editor: MySQL Workbench Community (GPL) for Mac OS X version 6.2.4  revision 12437
